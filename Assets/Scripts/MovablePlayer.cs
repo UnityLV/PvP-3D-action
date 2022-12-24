@@ -5,21 +5,21 @@ using UnityEngine;
 public abstract class MovablePlayer : BaseMirrorPlayer
 {
     [SerializeField] private float _moveSpeed;
-    private MovePlayerInput _input;
+    private MovePlayerInput _input = new();
     private SurfacePlayerMovement _surfaceMovement;
 
     protected Rigidbody Rigidbody { get; private set; }
 
-    private void Awake()
+    protected override void Init()
     {
         Rigidbody = GetComponent<Rigidbody>();
 
-        _input = new();
-        _surfaceMovement = new(Rigidbody, _moveSpeed);
+        _surfaceMovement = new SurfacePlayerMovement(Rigidbody, _moveSpeed);        
     }
 
     protected virtual void Update()
     {
+        
         TryMove();
     }
 

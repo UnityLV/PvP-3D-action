@@ -4,7 +4,7 @@ public class DashPlayerInput : BasePlayerInput
 {
     private int _triggerMouseButton = 0;    
 
-    public bool IsJerkTrigger()
+    public bool IsDashTrigger()
     {
         return Input.GetMouseButtonDown(_triggerMouseButton);        
     }
