@@ -1,20 +1,21 @@
 ﻿using Mirror;
 using UnityEngine;
 
-
-
 [RequireComponent(typeof(NetworkTransform), typeof(Rigidbody))]
 public abstract class MovablePlayer : BaseMirrorPlayer
 {
     [SerializeField] private float _moveSpeed;
     private MovePlayerInput _input;
-
+    private SurfacePlayerMovement _surfaceMovement;
 
     protected Rigidbody Rigidbody { get; private set; }
 
     private void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
+
+        _input = new();
+        _surfaceMovement = new(Rigidbody, _moveSpeed);
     }
 
     protected virtual void Update()
@@ -22,11 +23,11 @@ public abstract class MovablePlayer : BaseMirrorPlayer
         TryMove();
     }
 
-    private void TryMove()
+    protected virtual void TryMove()
     {
         if (IsCanMove(out Vector3 moveVector))
         {
-            Move(moveVector);
+            _surfaceMovement.Move(moveVector);
         }
     }
 
@@ -35,10 +36,7 @@ public abstract class MovablePlayer : BaseMirrorPlayer
         return _input.IsInputExist(out moveVector);
     }
 
-    protected virtual void Move(Vector3 moveVector)
-    {
-        Rigidbody.MovePosition(transform.position + moveVector * _moveSpeed * Time.deltaTime);
-    }
+    
 }
 
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class JerkPlayerInput : BasePlayerInput
+public class DashPlayerInput : BasePlayerInput
 {
     private int _triggerMouseButton = 0;    
 
