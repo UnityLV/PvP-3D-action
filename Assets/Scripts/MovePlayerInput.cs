@@ -3,11 +3,11 @@
 public class MovePlayerInput : BasePlayerInput
 {
 
-    public bool IsInputExist(out Vector3 moveVector)
+    public override bool IsInputExist(out Vector3 moveVector)
     {
         Vector3 rawMoveVector = CalculateRawMoveVector();
 
-        if (rawMoveVector == Vector3.zero)
+        if (rawMoveVector == default)
         {
             moveVector = default;
             return false;

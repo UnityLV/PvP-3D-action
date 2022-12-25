@@ -55,4 +55,9 @@ public class DashMovement : BasePlayerMovement
                Mathf.Abs(vector1.y - vector2.y) < threshold &&
                Mathf.Abs(vector1.z - vector2.z) < threshold;
     }
+
+    public override void Reset()
+    {
+        throw new NotImplementedException();
+    }
 }

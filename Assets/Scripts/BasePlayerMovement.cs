@@ -12,6 +12,8 @@ public abstract class BasePlayerMovement
     }
 
     public abstract void Move(Vector3 moveVector);
+
+    public abstract void Reset();
 }
 
 
