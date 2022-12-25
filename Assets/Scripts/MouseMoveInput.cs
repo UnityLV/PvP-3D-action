@@ -4,7 +4,7 @@ public class MouseMoveInput : BasePlayerInput
 {
     private float _sensitivity = 1;
 
-    public MouseMoveInput(float sensitivity)
+    public MouseMoveInput(float sensitivity = 1)
     {
         _sensitivity = sensitivity;
     }

@@ -54,7 +54,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &8067258266422116525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,10 +115,11 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0.1
-  _moveSpeed: 10
+  _moveSpeed: 17
   _dashDistance: 3
   _dashSpeed: 3
   _cameraHolder: {fileID: 2400549101813307619}
+  _mouseSensetivity: {x: 3, y: 0.5}
 --- !u!136 &2758846000411069370
 CapsuleCollider:
   m_ObjectHideFlags: 0

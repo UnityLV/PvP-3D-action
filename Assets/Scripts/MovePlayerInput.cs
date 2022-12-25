@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class MovePlayerInput : BasePlayerInput
-{
+{    
 
     public override bool IsInputExist(out Vector3 moveVector)
     {
@@ -16,7 +16,6 @@ public class MovePlayerInput : BasePlayerInput
         moveVector = rawMoveVector.normalized;
         return true;
     }   
-
 
     private Vector3 CalculateRawMoveVector()
     {
