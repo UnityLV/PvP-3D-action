@@ -16,7 +16,7 @@ public class MovementRotation : BasePlayerMovement
     public override void Move(Vector3 moveVector)
     {
         moveVector *= _directionalSensetivity;
-        moveVector *= MovementSpeed;
+        moveVector *= Scaler;
 
         RotateVertical(moveVector.y);
         RotateHorizontal(moveVector.x);

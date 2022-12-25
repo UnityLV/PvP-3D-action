@@ -7,8 +7,8 @@ public abstract class MovablePlayer : BaseMirrorPlayer
 {
     [SerializeField] private float _moveSpeed;    
 
-    private SurfacePlayerMovement _surfaceMovement;
-    private MovePlayerInput _movementInput;
+    private BasePlayerMovement _surfaceMovement;
+    private BasePlayerInput _movementInput;
 
     private int _floorLayerMask = 6;    
     private bool _isOnGround;
@@ -20,7 +20,7 @@ public abstract class MovablePlayer : BaseMirrorPlayer
         Rigidbody = GetComponent<Rigidbody>();
 
         _surfaceMovement = new SurfacePlayerMovement(Rigidbody, _moveSpeed);
-        _movementInput = new();
+        _movementInput = new MovePlayerInput();
     }
 
     protected override void Update()
@@ -63,7 +63,8 @@ public abstract class MovablePlayer : BaseMirrorPlayer
     private void Slowdown()
     {
         float slowDownCoeficient = 0.2f;
-        Rigidbody.velocity = Vector3.Lerp(Rigidbody.velocity, Vector3.zero, slowDownCoeficient);        
+        Rigidbody.velocity = Vector3.MoveTowards(Rigidbody.velocity, Vector3.zero, slowDownCoeficient);        
+        Rigidbody.angularVelocity = Vector3.MoveTowards(Rigidbody.angularVelocity, Vector3.zero, slowDownCoeficient);        
     }
 
     private void TrySetIsGrouded(Collision collision, bool value)

@@ -3,12 +3,14 @@
 public abstract class BasePlayerMovement
 {
     protected Rigidbody Rigidbody { get; private set; }
-    protected float MovementSpeed { get; private set; }
+    protected float Scaler { get; private set; }
 
-    protected BasePlayerMovement(Rigidbody rigidbody, float movementSpeed)
+    public virtual bool IsActive { get; protected set; }
+
+    protected BasePlayerMovement(Rigidbody rigidbody, float scaler)
     {
         Rigidbody = rigidbody;
-        MovementSpeed = movementSpeed;
+        Scaler = scaler;
     }
 
     public abstract void Move(Vector3 moveVector);

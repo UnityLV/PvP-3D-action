@@ -3,9 +3,10 @@
 public class DashPlayer : MovablePlayer
 {
     [SerializeField] private float _dashDistance;
-    [SerializeField] private float _dashSpeed;
-    [SerializeField] private Transform _cameraHolder;
     [SerializeField] private Vector2 _mouseSensetivity;
+    [SerializeField] private Transform _cameraHolder;
+
+    [SerializeField] private PhysicMaterial _dashPhysicMaterial;
 
     private BasePlayerInput _dashInput;
     private BasePlayerMovement _dashMovement;
@@ -17,15 +18,14 @@ public class DashPlayer : MovablePlayer
     {
         base.Init();
         _dashInput = new DashPlayerInput(transform);
-        _dashMovement = new DashMovement(StartCoroutine, _dashSpeed, Rigidbody, _dashDistance);
+        _dashMovement = new DashMovement(StartCoroutine, _dashDistance, _dashPhysicMaterial, Rigidbody);
 
         _mouseMoveInput = new MouseMoveInput();
-        _viewRotationMovement = new MovementRotation(_cameraHolder, _mouseSensetivity,Rigidbody, 1);
+        _viewRotationMovement = new MovementRotation(_cameraHolder, _mouseSensetivity, Rigidbody, 1);
     }
 
     protected override void Update()
     {
-        
         base.Update();
 
         if (_dashInput.IsInputExist(out Vector3 dashDirection))
@@ -38,11 +38,16 @@ public class DashPlayer : MovablePlayer
             _viewRotationMovement.Move(mouseMovement);
         }
 
-
-
     }
 
+    protected override bool IsCanMove(out Vector3 moveVector)
+    {
+        return base.IsCanMove(out moveVector) && _dashMovement.IsActive == false;
+    }
 
 }
+
+
+
 
 

@@ -5,7 +5,7 @@ public class DashPlayerInput : BasePlayerInput
 {
     private int _triggerMouseButton = 0;
     private Transform _transform;
-    private Vector3 _defaultDashDirection = Vector3.forward;
+    private Vector3 _defaultDashDirection = new Vector3(0.2f,0f,1f);
 
     public DashPlayerInput(Transform transform)
     {
@@ -25,7 +25,9 @@ public class DashPlayerInput : BasePlayerInput
     }
     private bool IsDashTrigger() => Input.GetMouseButtonDown(_triggerMouseButton);
 
-    private Vector3 CalculateDashVector() => _transform.InverseTransformPoint(_defaultDashDirection);
-
+    private Vector3 CalculateDashVector()
+    {
+        return _defaultDashDirection;
+    }
 }
 

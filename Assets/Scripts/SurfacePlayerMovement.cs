@@ -11,7 +11,7 @@ public class SurfacePlayerMovement : BasePlayerMovement
 
     public override void Move(Vector3 moveVector)
     {
-        bool isNotMaxVelosity = Rigidbody.velocity.sqrMagnitude < (Vector3.forward * MovementSpeed).sqrMagnitude;
+        bool isNotMaxVelosity = Rigidbody.velocity.sqrMagnitude < (Vector3.forward * Scaler).sqrMagnitude;
 
         if (isNotMaxVelosity)
         {
@@ -28,14 +28,14 @@ public class SurfacePlayerMovement : BasePlayerMovement
         Vector3 localMoveVector =
                     ((_transform.right * moveVector.x) +
                     (_transform.forward * moveVector.z)) *
-                    MovementSpeed;
+                    Scaler;
 
-        Rigidbody.AddForce(localMoveVector * MovementSpeed);
+        Rigidbody.AddForce(localMoveVector * Scaler);
     }
 
     private void SetMaxVelosity()
     {
-        Vector3 maxVelosity = Rigidbody.velocity.normalized * MovementSpeed;
+        Vector3 maxVelosity = Rigidbody.velocity.normalized * Scaler;
         Rigidbody.velocity = maxVelosity;
     }
 

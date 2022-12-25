@@ -9,5 +9,6 @@ public class Settings : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
+        Application.targetFrameRate = 60;
     }
 }
