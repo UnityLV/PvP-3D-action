@@ -6,6 +6,7 @@ public class MovePlayerInput : BasePlayerInput
     public override bool IsInputExist(out Vector3 moveVector)
     {
         Vector3 rawMoveVector = CalculateRawMoveVector();
+        
 
         if (rawMoveVector == default)
         {
@@ -21,6 +22,7 @@ public class MovePlayerInput : BasePlayerInput
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+        
 
         return new Vector3(horizontal, 0, vertical);
     }

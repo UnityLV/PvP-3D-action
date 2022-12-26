@@ -1,8 +1,12 @@
-﻿using UnityEngine;
+﻿using Mirror;
+using UnityEngine;
+
+
 
 public class DashPlayer : MovablePlayer
 {
     [SerializeField] private float _dashDistance;
+    [SerializeField] private float _dashForse;
     [SerializeField] private Vector2 _mouseSensetivity;
     [SerializeField] private Transform _cameraHolder;
 
@@ -14,11 +18,13 @@ public class DashPlayer : MovablePlayer
     private BasePlayerInput _mouseMoveInput;
     private BasePlayerMovement _viewRotationMovement;
 
+    [SyncVar] public int health;
+
     protected override void Init()
-    {
+    {        
         base.Init();
-        _dashInput = new DashPlayerInput(transform);
-        _dashMovement = new DashMovement(StartCoroutine, _dashDistance, _dashPhysicMaterial, Rigidbody);
+        _dashInput = new DashPlayerInput();
+        _dashMovement = new DashMovement(StartCoroutine, _dashDistance, _dashPhysicMaterial, Rigidbody, _dashForse);
 
         _mouseMoveInput = new MouseMoveInput();
         _viewRotationMovement = new MovementRotation(_cameraHolder, _mouseSensetivity, Rigidbody, 1);
@@ -26,19 +32,30 @@ public class DashPlayer : MovablePlayer
 
     protected override void Update()
     {
-        base.Update();
-
-        if (_dashInput.IsInputExist(out Vector3 dashDirection))
+        if (isLocalPlayer )
         {
-            _dashMovement.Move(dashDirection);
-        }
+            base.Update();
 
-        if (_mouseMoveInput.IsInputExist(out Vector3 mouseMovement))
-        {
-            _viewRotationMovement.Move(mouseMovement);
-        }
+            if (_dashInput.IsInputExist(out Vector3 dashDirection))
+            {
+                _dashMovement.Move(dashDirection);
+            }
 
+            if (_mouseMoveInput.IsInputExist(out Vector3 mouseMovement))
+            {
+                _viewRotationMovement.Move(mouseMovement);
+            }
+        }                        
+        
+                   
     }
+    protected override void OnCollisionEnter(Collision collision)
+    {
+        base.OnCollisionEnter(collision);
+        
+    }
+
+   
 
     protected override bool IsCanMove(out Vector3 moveVector)
     {

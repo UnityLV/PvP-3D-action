@@ -1,21 +1,22 @@
 ﻿using Mirror;
-using UnityEngine;   
+using UnityEngine;
 
 [RequireComponent(typeof(NetworkIdentity))]
 public abstract class BaseMirrorPlayer : NetworkBehaviour
-{
-    public override void OnStartClient()
+{    
+
+    public override void OnStartLocalPlayer()
     {
+        base.OnStartLocalPlayer();
+        Debug.Log("Init"); 
         Init();
-        base.OnStartClient();
     }
 
     protected abstract void Init();
 
     protected virtual void Update()
     {
-        if (isLocalPlayer == false)
-            return;
+        
     }
 }
 

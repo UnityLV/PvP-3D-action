@@ -1,9 +1,8 @@
 ﻿using Mirror;
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(NetworkTransform), typeof(Rigidbody))]
-public abstract class MovablePlayer : BaseMirrorPlayer
+public class MovablePlayer : BaseMirrorPlayer
 {
     [SerializeField] private float _moveSpeed;    
 
@@ -15,8 +14,9 @@ public abstract class MovablePlayer : BaseMirrorPlayer
 
     protected Rigidbody Rigidbody { get; private set; }
 
-    protected override void Init()
+    protected override void Init()    
     {
+        
         Rigidbody = GetComponent<Rigidbody>();
 
         _surfaceMovement = new SurfacePlayerMovement(Rigidbody, _moveSpeed);
@@ -25,26 +25,61 @@ public abstract class MovablePlayer : BaseMirrorPlayer
 
     protected override void Update()
     {
-        base.Update();
-
-        bool isNotMovingOnGround = (TryMove() == false) && _isOnGround;
-
-        if (isNotMovingOnGround)
+        if (isLocalPlayer)
         {
-            Slowdown();
-        }
+            base.Update();
+
+            bool isMoveind = TryMove();
+            bool isNotMovingOnGround = (isMoveind == false) && _isOnGround;
+
+            if (isNotMovingOnGround)
+            {
+                Slowdown();
+            }
+        }     
     }    
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        TrySetIsGrouded(collision, true);
-    }
+    protected virtual void OnCollisionEnter(Collision collision)
+    {              
+        TrySetIsGrouded(collision, true);        
+    }    
 
     private void OnCollisionExit(Collision collision)
     {
         TrySetIsGrouded(collision, false);
     }
-    
+
+    private void TrySetIsGrouded(Collision collision, bool value)
+    {
+        if (collision.gameObject.layer == _floorLayerMask)
+        {
+            _isOnGround = value;
+        }
+    }
+
+    private void TryRepulse(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent(out Rigidbody otherRigidbody))
+        {
+            Repulse(otherRigidbody);
+        }
+    }
+
+    private void Repulse(Rigidbody otherRigidbody)
+    {
+        (Vector3 newVelocity1, Vector3 newVelocity2) =
+                        CalculateNewVelocities(Rigidbody.velocity, otherRigidbody.velocity, Rigidbody.mass, otherRigidbody.mass);
+        Rigidbody.velocity = newVelocity1;
+        otherRigidbody.velocity = newVelocity2;
+    }
+
+    private (Vector3, Vector3) CalculateNewVelocities(Vector3 velocity1, Vector3 velocity2, float mass1, float mass2)
+    {
+        Vector3 newVelocity1 = (mass1 * velocity1 + mass2 * velocity2) / (mass1 + mass2);
+        Vector3 newVelocity2 = (mass2 * velocity2 + mass1 * velocity1) / (mass1 + mass2);
+        return (newVelocity1, newVelocity2);
+    }
+
     protected virtual bool TryMove()
     {
         if (IsCanMove(out Vector3 moveVector))
@@ -56,7 +91,8 @@ public abstract class MovablePlayer : BaseMirrorPlayer
     }    
 
     protected virtual bool IsCanMove(out Vector3 moveVector)
-    {        
+    {
+        Debug.Log(_isOnGround);
         return _movementInput.IsInputExist(out moveVector) && _isOnGround;
     }
 
@@ -65,15 +101,7 @@ public abstract class MovablePlayer : BaseMirrorPlayer
         float slowDownCoeficient = 0.2f;
         Rigidbody.velocity = Vector3.MoveTowards(Rigidbody.velocity, Vector3.zero, slowDownCoeficient);        
         Rigidbody.angularVelocity = Vector3.MoveTowards(Rigidbody.angularVelocity, Vector3.zero, slowDownCoeficient);        
-    }
-
-    private void TrySetIsGrouded(Collision collision, bool value)
-    {
-        if (collision.gameObject.layer == _floorLayerMask)
-        {
-            _isOnGround = value;
-        }
-    }
+    }  
 
 }
 

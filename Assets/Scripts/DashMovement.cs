@@ -9,20 +9,23 @@ public sealed class DashMovement : BasePlayerMovement
     private readonly PhysicMaterial _dashMaterial;
 
     private Vector3 _dashStartPosition;
-
     private float _dashDistanceTraveled;
     private float _dashDistance;
+    private WaitForSeconds _axelerationDelay = new WaitForSeconds(0.1f);
+
+    private PhysicMaterial _defaultMaterial;
+    private Collider _collider;
 
     public DashMovement(Func<IEnumerator, Coroutine> startCoroutine, float dashDistance,
         PhysicMaterial dashMaterial,
-        Rigidbody rigidbody, float scaler = 60)
+        Rigidbody rigidbody, float scaler)
             : base(rigidbody, scaler)
     {
         _transform = rigidbody.transform;
         _startCoroutine = startCoroutine;
         _dashDistance = dashDistance;
-        _dashMaterial = dashMaterial;
-    }
+        _dashMaterial = dashMaterial;        
+    }   
 
     public override void Move(Vector3 moveVector)
     {
@@ -34,52 +37,72 @@ public sealed class DashMovement : BasePlayerMovement
 
     private IEnumerator Dash(Vector3 moveVector)
     {
+        SetStartValues();
+        SetStartCondition(moveVector);
+
+        yield return _axelerationDelay;
+
+        yield return ContinuesDash();
+
+        SetFinalValues();
+    }
+
+    private void SetStartValues()
+    {
         IsActive = true;
         Rigidbody.velocity = default;
-        PhysicMaterial defaultMaterial = null;
+        _dashStartPosition = _transform.position;
+        _dashDistanceTraveled = 0;
 
-        if (Rigidbody.gameObject.TryGetComponent(out CapsuleCollider collider))
+        if (Rigidbody.gameObject.TryGetComponent(out _collider))
         {
-            defaultMaterial = collider.material;
-            collider.material = _dashMaterial;
+            _defaultMaterial = _collider.material;
+            _collider.material = _dashMaterial;
         }
 
-        Rigidbody.AddForce(moveVector * Scaler, ForceMode.Impulse);
+    }
 
-        _dashDistanceTraveled = 0;
-        _dashStartPosition = _transform.position;
+    private void SetStartCondition(Vector3 moveVector)
+    {
+        var worldSpaceVector = _transform.TransformDirection(moveVector);
 
-        yield return new WaitForSeconds(0.1f);
+        Rigidbody.AddForce(worldSpaceVector * Scaler, ForceMode.Impulse);
+    }
 
+    private IEnumerator ContinuesDash()
+    {
         Vector3 continuesDashVelosity = Rigidbody.velocity;
 
-        while (ConditionForDash())
+        while (ConditionForContinueDash())
         {
             _dashDistanceTraveled += Vector3.Distance(_transform.position, _dashStartPosition);
             _dashStartPosition = _transform.position;
-
+            
             Rigidbody.velocity = continuesDashVelosity;
 
             yield return null;
         }
+    }
 
-        if (defaultMaterial != null)
+    private void SetFinalValues()
+    {
+        if (_defaultMaterial != null)
         {
-            collider.material = defaultMaterial;
+            _collider.material = _defaultMaterial;
         }
         IsActive = false;
     }
 
-    private bool ConditionForDash()
+
+    private bool ConditionForContinueDash()
     {
         bool isNotReachDistance = _dashDistanceTraveled < _dashDistance;
         bool isStoped = IsAlmostEqualVector(Rigidbody.velocity, Vector3.zero);
-        Debug.Log(isStoped);
-
+        
         return isNotReachDistance && isStoped == false;
     }
 
-    private bool IsAlmostEqualVector(Vector3 vectorA, Vector3 vectorB, float threshold = 0.001f)
+    private bool IsAlmostEqualVector(Vector3 vectorA, Vector3 vectorB, float threshold = 0.8f)
     {
         return Mathf.Abs(vectorA.x - vectorB.x) < threshold &&
                 Mathf.Abs(vectorA.y - vectorB.y) < threshold &&

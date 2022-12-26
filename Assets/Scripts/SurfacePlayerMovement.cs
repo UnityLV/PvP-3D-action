@@ -11,6 +11,7 @@ public class SurfacePlayerMovement : BasePlayerMovement
 
     public override void Move(Vector3 moveVector)
     {
+        Debug.Log("Move" + moveVector);
         bool isNotMaxVelosity = Rigidbody.velocity.sqrMagnitude < (Vector3.forward * Scaler).sqrMagnitude;
 
         if (isNotMaxVelosity)

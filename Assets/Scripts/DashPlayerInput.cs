@@ -4,13 +4,8 @@
 public class DashPlayerInput : BasePlayerInput
 {
     private int _triggerMouseButton = 0;
-    private Transform _transform;
-    private Vector3 _defaultDashDirection = new Vector3(0.2f,0f,1f);
-
-    public DashPlayerInput(Transform transform)
-    {
-        _transform = transform;
-    }
+    
+    private Vector3 _defaultDashDirection = new Vector3(0, 0, 1f);    
 
     public override bool IsInputExist(out Vector3 moveVector)
     {
