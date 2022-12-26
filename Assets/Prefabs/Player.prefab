@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1010701438594302761}
   - component: {fileID: 69155208358069911}
   - component: {fileID: 8067258266422116525}
+  - component: {fileID: -9155909534876148963}
   - component: {fileID: 2068851128389012892}
   - component: {fileID: 5210240261627623430}
   m_Layer: 0
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 5912946980187193733}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5436026405354220220}
@@ -54,6 +55,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _moveSpeed: 17
+  _testObject: {fileID: 4927162062814884959, guid: b5a45329f3e09da4ab90fabb82253a7b,
+    type: 3}
   _dashDistance: 10
   _dashForse: 40
   _mouseSensetivity: {x: 3, y: 0.5}
@@ -74,9 +77,9 @@ Rigidbody:
   m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 80
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!114 &8067258266422116525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +97,29 @@ MonoBehaviour:
   serverOnly: 0
   visible: 0
   hasSpawned: 0
+--- !u!114 &-9155909534876148963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5912946980187193733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 69155208358069911}
+  clientAuthority: 0
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1
 --- !u!114 &2068851128389012892
 MonoBehaviour:
   m_ObjectHideFlags: 0

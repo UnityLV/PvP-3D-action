@@ -3,12 +3,11 @@ using UnityEngine;
 
 [RequireComponent(typeof(NetworkIdentity))]
 public abstract class BaseMirrorPlayer : NetworkBehaviour
-{    
-
+{
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        Debug.Log("Init"); 
+        Debug.Log("Init");
         Init();
     }
 

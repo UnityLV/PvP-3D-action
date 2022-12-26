@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-
+using UnityEngine.Events;
 public abstract class BasePlayerCollisions
 {
     protected BaseMirrorPlayer ThisPlayer { get; private set; }
+
+    public event UnityAction CollisionСonfirm;
 
     protected BasePlayerCollisions(BaseMirrorPlayer thisPlayer)
     {
@@ -10,6 +12,11 @@ public abstract class BasePlayerCollisions
     }
 
     public abstract void CollisonWith(Collision Collision);
+
+    protected void InvokeColisionConfirm()
+    {
+        CollisionСonfirm?.Invoke();
+    }
 }
 
 
