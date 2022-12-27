@@ -8,7 +8,7 @@ public class GetDashHitPlayerCollisions : BasePlayerCollisions
         ThisPlayer = thisPlayer;
     }
 
-    public override void CollisonWith(Collision Collision)
+    public override void CollisionWith(Collision Collision)
     {
         bool isColisionWithAnotherDashPlayer = Collision.gameObject.TryGetComponent(out DashPlayer anotherDashPlayer);
 

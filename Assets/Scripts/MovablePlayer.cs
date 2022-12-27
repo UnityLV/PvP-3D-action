@@ -48,7 +48,7 @@ public class MovablePlayer : BaseMirrorPlayer
 
         if (IsCanPlayerColision())
         {
-            _repulseColisions?.CollisonWith(collision);
+            _repulseColisions?.CollisionWith(collision);
         }
     }    
 
@@ -67,7 +67,6 @@ public class MovablePlayer : BaseMirrorPlayer
     }
 
     protected virtual bool IsCanPlayerColision() => true;
-
 
     protected virtual bool TryMove()
     {

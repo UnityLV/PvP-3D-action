@@ -11,7 +11,7 @@ public abstract class BasePlayerCollisions
         ThisPlayer = thisPlayer;
     }
 
-    public abstract void CollisonWith(Collision Collision);
+    public abstract void CollisionWith(Collision Collision);
 
     protected void InvokeColisionConfirm()
     {

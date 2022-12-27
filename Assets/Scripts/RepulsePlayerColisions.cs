@@ -10,9 +10,8 @@ public class RepulsePlayerColisions : BasePlayerCollisions
         Rigidbody = rigidbody;
     }
 
-    public override void CollisonWith(Collision collision)
+    public override void CollisionWith(Collision collision)
     {
-        Debug.Log(collision.gameObject.TryGetComponent(out MovablePlayer mova2blePlayer));
         if (collision.gameObject.TryGetComponent(out MovablePlayer movablePlayer))
         {
             Repulse(collision);

@@ -18,11 +18,12 @@ public class DashPlayer : MovablePlayer
 
     private BasePlayerCollisions _apllyHitColision;
     private BasePlayerCollisions _getHitColision;
-    private int _score;
+
+    [SyncVar] private int _score;
+    [SyncVar] private bool _isInvulnerable;
 
     public bool IsDashing => _dashMovement.IsActive;
-
-    public bool IsInvulnerable { get; private set; }
+    public bool IsInvulnerable => _isInvulnerable;
 
     protected override void Init()
     {        
@@ -63,6 +64,15 @@ public class DashPlayer : MovablePlayer
     private void OnDestroy()
     {
         _apllyHitColision.CollisionСonfirm -= OnApplyHitColisionConfirm;
+        _getHitColision.CollisionСonfirm -= OnGetHitCollisionСonfirm;
+    }
+
+    protected override void OnCollisionEnter(Collision collision)
+    {
+        base.OnCollisionEnter(collision);
+
+        _apllyHitColision.CollisionWith(collision);
+        _getHitColision.CollisionWith(collision);
     }
 
     protected override bool IsCanMove(out Vector3 moveVector)
@@ -70,14 +80,24 @@ public class DashPlayer : MovablePlayer
         return base.IsCanMove(out moveVector) && _dashMovement.IsActive == false;
     }
 
+    [Command]
     private void OnApplyHitColisionConfirm()
     {
         _score++;
+        Debug.Log(_score);
     }
 
+    [Command]
     private void OnGetHitCollisionСonfirm()
     {
-        IsInvulnerable = true;
+        _isInvulnerable = true;
+        Invoke(nameof(ResetInvulnerable), 3f);
+        Debug.Log(_isInvulnerable);
+    }
+
+    private void ResetInvulnerable()
+    {
+        _isInvulnerable = false;
     }
 
 }
